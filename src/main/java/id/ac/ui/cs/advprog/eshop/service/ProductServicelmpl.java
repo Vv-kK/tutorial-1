@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class ProductServicelmpl implements ProductService{
 
-    private long totalProduct = 1;
+    private int totalProduct = 1;
     @Autowired
     private ProductRepository productRepository;
 
@@ -37,8 +37,14 @@ public class ProductServicelmpl implements ProductService{
         return allProduct;
     }
 
-//    public Product getProductById(Sring productId){
-//        Iterator<Product> productIterator = productRepository.findAll();
-//
-//    }
+    @Override
+    public Product getProductById(String productId){
+        return productRepository.getProductById(productId);
+    }
+
+    @Override
+    public Product edit(Product editedProduct) {
+        productRepository.edit(editedProduct);
+        return editedProduct;
+    }
 }

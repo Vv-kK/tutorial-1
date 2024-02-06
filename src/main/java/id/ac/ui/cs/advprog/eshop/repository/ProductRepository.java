@@ -28,11 +28,28 @@ public class ProductRepository {
         }
     }
 
+    public Product edit(Product editedproduct){
+        Integer id = Integer.parseInt(editedproduct.getProductId());
+        for (int i=0; i < productData.size(); i++){
+            Product produk = productData.get(i);
+            if (produk.getProductId().equals(editedproduct.getProductId())){
+                productData.set(i, editedproduct);
+                return editedproduct;
+            }
+        }
+        throw new IllegalArgumentException("Product ID invalid");
+    }
 
-//    public Product edit(String productId, Product product){
-//        productData.remove(product);
-//        return product;
-//    }
+    public Product getProductById(String productId){
+        Iterator<Product> products = findAll();
+        while(products.hasNext()){
+            Product currProduct = products.next();
+            if (productId.equals(currProduct.getProductId())){
+                return currProduct;
+            }
+        }
+        throw new IllegalArgumentException("Product ID invalid");
+    }
 
     public Iterator<Product> findAll(){
         return productData.iterator();
