@@ -12,13 +12,21 @@ import java.util.List;
 @Service
 public class ProductServicelmpl implements ProductService{
 
+    private int totalProduct = 1;
     @Autowired
     private ProductRepository productRepository;
 
     @Override
     public Product create(Product product) {
+        product.setProductId(String.valueOf(totalProduct));
+        totalProduct++;
         productRepository.create(product);
         return product;
+    }
+
+    @Override
+    public void delete(String productId){
+        productRepository.delete(productId);
     }
 
     @Override
@@ -27,5 +35,16 @@ public class ProductServicelmpl implements ProductService{
         List<Product> allProduct = new ArrayList<>();
         productIterator.forEachRemaining(allProduct::add);
         return allProduct;
+    }
+
+    @Override
+    public Product getProductById(String productId){
+        return productRepository.getProductById(productId);
+    }
+
+    @Override
+    public Product edit(Product editedProduct) {
+        productRepository.edit(editedProduct);
+        return editedProduct;
     }
 }
