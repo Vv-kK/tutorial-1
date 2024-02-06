@@ -29,7 +29,6 @@ public class ProductRepository {
     }
 
     public Product edit(Product editedproduct){
-        Integer id = Integer.parseInt(editedproduct.getProductId());
         for (int i=0; i < productData.size(); i++){
             Product produk = productData.get(i);
             if (produk.getProductId().equals(editedproduct.getProductId())){
