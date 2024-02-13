@@ -75,7 +75,9 @@ public class ProductRepositoryTest {
         Product editedProduct = productRepository.getProductById("eb558e9f-1c39-460e-8860-71af6af63bd6");
         editedProduct.setProductQuantity(60);
         editedProduct.setProductName("Sampo Cap Bango");
-        productRepository.edit(editedProduct);
+        Product result = productRepository.edit(editedProduct);
+
+        assertEquals(editedProduct, result);
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertTrue(productIterator.hasNext());
@@ -87,6 +89,7 @@ public class ProductRepositoryTest {
         assertNotEquals("Sampo Cap Bambang", savedProduct.getProductName());
     }
 
+    @Test
     void testEditIdNotExist(){
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -96,6 +99,15 @@ public class ProductRepositoryTest {
 
         productRepository.create(product);
         assertThrows(IllegalArgumentException.class, () -> productRepository.getProductById("1"), "Product ID invalid");
+        assertDoesNotThrow(() -> productRepository.getProductById("eb558e9f-1c39-460e-8860-71af6af63bd6"));
+        assertDoesNotThrow(() -> productRepository.edit(product));
+
+
+        Product notExistProduct = new Product();
+        notExistProduct.setProductId("sh82je9y2");
+        notExistProduct.setProductName("Sabun Cap Bambang");
+        notExistProduct.setProductQuantity(50);
+        assertThrows(IllegalArgumentException.class, () -> productRepository.edit(notExistProduct));
     }
 
     @Test
