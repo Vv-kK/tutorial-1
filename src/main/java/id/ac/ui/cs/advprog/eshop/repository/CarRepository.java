@@ -35,6 +35,7 @@ public class CarRepository {
         for (int i=0; i < carData.size(); i++){
             Car car = carData.get(i);
             if (car.getCarId().equals(id)){
+                updatedCar.setCarId(id);
                 carData.set(i, updatedCar);
                 return car;
             }
