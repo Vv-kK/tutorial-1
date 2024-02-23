@@ -44,12 +44,12 @@ Sedangkan, CD atau Continuous Deployment berarti adanya deploy secara otomatis s
    - **Dependancy Inversion Principle (DIP)** berarti sebuah class sebaiknya bergantung pada abstract class atau interface dibanding sebuah concrete class. Hal ini telah saya terapkan dengan membuat carServiceImpl yang bergantung pada interface CarService dan CarController yang menyimpan service dalam bentuk interfacenya dan bukan concrete classnya.
    
 2. Keuntungan SOLID principles
-   - Meningkatkan fleksibilitas dari kode
-   - Meningkatkan maintainablitiy dan comprehensibility
-   - Memudahkan proses mencari bug
-   - Memudahkan penambahan fitur baru tanpa menyebabkan error di bagian lain
+   - Meningkatkan fleksibilitas dari kode (contohnya dengan menerapkan DIP, kode tidak bergantung pada satu spesifik implementasi kode)
+   - Meningkatkan maintainablitiy dan comprehensibility (contohnya dengan menerapkan SRP kode lebih gampang dipahami karena terpisah-pisah dan spesifik)
+   - Memudahkan proses mencari bug (contohnya dengan penerapan SRP kita dapat mengidentifikasi dengan lebih mudah method atau class mana yang berhubungan dengan error tersebut)
+   - Memudahkan penambahan fitur baru tanpa menyebabkan error di bagian lain (contohnya dengan penerapan DIP dan OCP, kode akan tidak akan bergantung satu sama lain dan tidak mendukung terjadinya modifikasi di kode yang sudah ada sebelumnya)
    
 3. Kekurangan tidak menggunakan SOLID principles
-   - Membuat kode lebih mudah mengalami error ketika melakukan extension atau penambahan fitur baru
-   - Kode menjadi sulit dipahami dan orang menjadi habis banyak waktu memahami kodenya
-   - Proses testing menjadi lebih sulit dan pelacakan alasan kemunculan bug juga menjadi lebih sulit
+   - Membuat kode lebih mudah mengalami error ketika melakukan extension atau penambahan fitur baru (jika satu class atau method memiliki fungsionalitas yang campur-campur akan lebih sulit memahami kode bagian mana yang menyebabkan error)
+   - Kode menjadi sulit dipahami dan orang menjadi habis banyak waktu memahami kodenya (contohnya jika semua digabung menjadi satu class maka akan sulit untuk memahami apa yang dilakukan oleh class tersebut)
+   - Proses testing menjadi lebih sulit dan pelacakan alasan kemunculan bug juga menjadi lebih sulit (contohnya akan lebih sulit membuat unit testing jika satu method melakukan banyak fungsionalitas dan sulit untuk mendeteksi dimana kesalahan kode kita karena readabilitynya juga lebih jelek tanpa menerapkan SOLID principles)
