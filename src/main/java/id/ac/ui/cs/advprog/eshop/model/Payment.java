@@ -66,7 +66,19 @@ public class Payment {
                 this.setStatus(PaymentStatus.REJECTED.getValue());
                 return;
             }
+            this.setStatus(PaymentStatus.SUCCESS.getValue());
 
+        } else if (method.equals(PaymentMethod.COD.getValue())){
+            String address = paymentData.get("address");
+            String deliveryFee = paymentData.get("deliveryFee");
+            if (address == null || deliveryFee == null){
+                this.setStatus(PaymentStatus.REJECTED.getValue());
+                return;
+            }
+            if (address.length() == 0 || deliveryFee.length() == 0){
+                this.setStatus(PaymentStatus.REJECTED.getValue());
+                return;
+            }
             this.setStatus(PaymentStatus.SUCCESS.getValue());
         }
     }
