@@ -41,7 +41,7 @@ public class PaymentTest {
         Map<String, String> paymentData = new HashMap<String, String>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
-                PaymentMethod.VOUCHER_CODE.getValue(), PaymentStatus.SUCCESS.getValue(), paymentData, order);
+                PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
 
         assertSame(this.products, payment.getOrder());
         assertEquals("13652556-012a-4c07-b546-52hb3h1b1n3", payment.getId());
@@ -51,21 +51,11 @@ public class PaymentTest {
     }
 
     @Test
-    void testCreatePaymentInvalidStatus(){
-        Map<String, String> paymentData = new HashMap<String, String>();
-        paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
-                    PaymentMethod.VOUCHER_CODE.getValue(), "MEOW", paymentData, order);
-        });
-    }
-
-    @Test
     void testSetStatusToIvalidStatus(){
         Map<String, String> paymentData = new HashMap<String, String>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
-                PaymentMethod.VOUCHER_CODE.getValue(), PaymentStatus.SUCCESS.getValue(), paymentData, order);
+                PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
         assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
     }
 
@@ -74,8 +64,42 @@ public class PaymentTest {
         Map<String, String> paymentData = new HashMap<String, String>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
-                PaymentMethod.VOUCHER_CODE.getValue(), PaymentStatus.SUCCESS.getValue(), paymentData, order);
+                PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
         payment.setStatus(PaymentStatus.REJECTED.getValue());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    //tests made for voucher code sub feature
+    @Test
+    void testCreatePaymentVoucherCodeRejectedNot16Characters(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        paymentData.put("voucherCode", "ESHOP1234ABC56789");
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+    @Test
+    void testCreatePaymentVoucherCodeRejectedNotStartedWithESHOP(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        paymentData.put("voucherCode", "SHOP1234ABC56789");
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+    @Test
+    void testCreatePaymentVoucherCodeRejectedNotContain8NumericalCharacters(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        paymentData.put("voucherCode", "ESHOP1234ABCDEFG");
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCreatePaymentVoucherCodeRejectedNoVocuherCode(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, order);
+
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 }
