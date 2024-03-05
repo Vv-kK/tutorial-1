@@ -9,7 +9,6 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.Map;
 
-@Builder
 @Getter
 public class Payment {
     String id;
@@ -18,7 +17,7 @@ public class Payment {
     Map<String, String> paymentData;
     Order order;
 
-    public Payment(String id, String method, String status, Map<String, String> paymentData, Order order){
+    public Payment(String id, String method, Map<String, String> paymentData, Order order){
         this.id = id;
         this.paymentData = paymentData;
         this.order = order;
@@ -28,7 +27,7 @@ public class Payment {
         } else {
             throw new IllegalArgumentException();
         }
-        this.setStatus(status);
+        this.validasiMethod(method, paymentData);
     }
 
     public void setStatus(String status){
@@ -37,5 +36,9 @@ public class Payment {
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    public void validasiMethod(String method, Map<String, String> paymentData){
+
     }
 }
