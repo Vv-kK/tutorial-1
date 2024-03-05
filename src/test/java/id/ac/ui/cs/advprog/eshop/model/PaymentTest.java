@@ -102,4 +102,45 @@ public class PaymentTest {
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
+
+    //tests made for COD sub feature
+    @Test
+    void testCodSuccess(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        paymentData.put("address", "Fasilkom UI");
+        paymentData.put("deliveryFee", "9000");
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
+                PaymentMethod.COD.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCodMissingAddress(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        paymentData.put("deliveryFee", "9000");
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
+                PaymentMethod.COD.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCodMissingFee(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        paymentData.put("address", "Fasilkom UI");
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
+                PaymentMethod.COD.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCodEmptyPaymentData(){
+        Map<String, String> paymentData = new HashMap<String, String>();
+        Payment payment = new Payment("13652556-012a-4c07-b546-52hb3h1b1n3",
+                PaymentMethod.COD.getValue(), paymentData, order);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
 }
