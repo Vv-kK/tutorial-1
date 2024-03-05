@@ -39,6 +39,35 @@ public class Payment {
     }
 
     public void validasiMethod(String method, Map<String, String> paymentData){
+        if (method.equals(PaymentMethod.VOUCHER_CODE.getValue())){
+            String voucherCode = paymentData.get("voucherCode");
+            if (voucherCode == null) {
+                this.setStatus(PaymentStatus.REJECTED.getValue());
+                return;
+            }
 
+            if (voucherCode.length() != 16) {
+                this.setStatus(PaymentStatus.REJECTED.getValue());
+                return;
+            }
+
+            if (!voucherCode.startsWith("ESHOP")) {
+                this.setStatus(PaymentStatus.REJECTED.getValue());
+                return;
+            }
+
+            int digitCount = 0;
+            for (char character: voucherCode.toCharArray()) {
+                if (Character.isDigit(character)) {
+                    digitCount += 1;
+                }
+            }
+            if (digitCount != 8) {
+                this.setStatus(PaymentStatus.REJECTED.getValue());
+                return;
+            }
+
+            this.setStatus(PaymentStatus.SUCCESS.getValue());
+        }
     }
 }
