@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
 
 public class OrderTest {
     private List<Product> products;
