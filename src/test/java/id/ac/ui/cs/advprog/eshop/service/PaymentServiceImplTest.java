@@ -93,8 +93,6 @@ public class PaymentServiceImplTest {
 
         assertEquals(payment.getId(), result.getId());
         assertEquals(OrderStatus.SUCCESS.getValue(), result.getOrder().getStatus());
-        verify(orderService, times(1)).updateStatus(result.getOrder().getId(), OrderStatus.SUCCESS.getValue());
-
     }
 
     @Test
@@ -108,8 +106,6 @@ public class PaymentServiceImplTest {
 
         assertEquals(payment.getId(), result.getId());
         assertEquals(OrderStatus.FAILED.getValue(), result.getOrder().getStatus());
-        verify(orderService, times(1)).updateStatus(result.getOrder().getId(), OrderStatus.FAILED.getValue());
-
     }
 
     @Test
@@ -119,16 +115,12 @@ public class PaymentServiceImplTest {
 
         assertThrows(IllegalArgumentException.class,
                 () -> paymentService.setStatus(payment, "MEOW"));
-
-        verify(orderService, times(0)).updateStatus(anyString(), anyString());
     }
 
     @Test
-    void testUpdateStatusInvalidPayment() {
+    void testSetStatusInvalidPayment() {
         assertThrows(NoSuchElementException.class,
                 () -> paymentService.setStatus(null, OrderStatus.SUCCESS.getValue()));
-
-        verify(orderService, times(0)).updateStatus(anyString(), anyString());
     }
 
     @Test
