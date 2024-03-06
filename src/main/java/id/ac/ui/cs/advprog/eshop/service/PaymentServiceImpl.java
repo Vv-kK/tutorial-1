@@ -34,9 +34,9 @@ public class PaymentServiceImpl implements PaymentService{
             throw new NoSuchElementException();
         }
         if(status.equals(PaymentStatus.SUCCESS.getValue())){
-            orderService.updateStatus(payment.getOrder().getId(), OrderStatus.SUCCESS.getValue());
+            payment.getOrder().setStatus(OrderStatus.SUCCESS.getValue());
         } else if (status.equals(PaymentStatus.REJECTED.getValue())){
-            orderService.updateStatus(payment.getOrder().getId(), OrderStatus.FAILED.getValue());
+            payment.getOrder().setStatus(OrderStatus.FAILED.getValue());
         } else {
             throw new IllegalArgumentException();
         }
