@@ -85,9 +85,6 @@ public class PaymentServiceImplTest {
     @Test
     void testSetStatusSuccess(){
         Payment payment = payments.getFirst();
-        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder());
-        doReturn(payment).when(paymentRepository).findById(payment.getId());
-        doReturn(newPayment).when(paymentRepository).save(any(Payment.class));
 
         Payment result = paymentService.setStatus(payment, PaymentStatus.SUCCESS.getValue());
 
@@ -98,9 +95,6 @@ public class PaymentServiceImplTest {
     @Test
     void testSetStatusRejected(){
         Payment payment = payments.getLast();
-        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder());
-        doReturn(payment).when(paymentRepository).findById(payment.getId());
-        doReturn(newPayment).when(paymentRepository).save(any(Payment.class));
 
         Payment result = paymentService.setStatus(payment, PaymentStatus.REJECTED.getValue());
 
