@@ -24,7 +24,7 @@ public class Payment {
         } else {
             throw new IllegalArgumentException();
         }
-        this.validasiMethod(method, paymentData);
+        this.validasiPembayaran(method, paymentData);
     }
 
     public void setStatus(String status){
@@ -35,48 +35,56 @@ public class Payment {
         }
     }
 
-    public void validasiMethod(String method, Map<String, String> paymentData){
+    public void validasiPembayaran(String method, Map<String, String> paymentData){
         if (method.equals(PaymentMethod.VOUCHER_CODE.getValue())){
             String voucherCode = paymentData.get("voucherCode");
-            if (voucherCode == null) {
-                this.setStatus(PaymentStatus.REJECTED.getValue());
-                return;
-            }
-
-            if (voucherCode.length() != 16) {
-                this.setStatus(PaymentStatus.REJECTED.getValue());
-                return;
-            }
-
-            if (!voucherCode.startsWith("ESHOP")) {
-                this.setStatus(PaymentStatus.REJECTED.getValue());
-                return;
-            }
-
-            int digitCount = 0;
-            for (char character: voucherCode.toCharArray()) {
-                if (Character.isDigit(character)) {
-                    digitCount += 1;
-                }
-            }
-            if (digitCount != 8) {
-                this.setStatus(PaymentStatus.REJECTED.getValue());
-                return;
-            }
-            this.setStatus(PaymentStatus.SUCCESS.getValue());
+            this.validateVoucher(voucherCode);
 
         } else if (method.equals(PaymentMethod.COD.getValue())){
             String address = paymentData.get("address");
             String deliveryFee = paymentData.get("deliveryFee");
-            if (address == null || deliveryFee == null){
-                this.setStatus(PaymentStatus.REJECTED.getValue());
-                return;
-            }
-            if (address.length() == 0 || deliveryFee.length() == 0){
-                this.setStatus(PaymentStatus.REJECTED.getValue());
-                return;
-            }
-            this.setStatus(PaymentStatus.SUCCESS.getValue());
+            this.validateCOD(address, deliveryFee);
         }
+    }
+
+    public void validateVoucher(String voucherCode){
+        if (voucherCode == null) {
+            this.setStatus(PaymentStatus.REJECTED.getValue());
+            return;
+        }
+
+        if (voucherCode.length() != 16) {
+            this.setStatus(PaymentStatus.REJECTED.getValue());
+            return;
+        }
+
+        if (!voucherCode.startsWith("ESHOP")) {
+            this.setStatus(PaymentStatus.REJECTED.getValue());
+            return;
+        }
+
+        int digitCount = 0;
+        for (char character: voucherCode.toCharArray()) {
+            if (Character.isDigit(character)) {
+                digitCount += 1;
+            }
+        }
+        if (digitCount != 8) {
+            this.setStatus(PaymentStatus.REJECTED.getValue());
+            return;
+        }
+        this.setStatus(PaymentStatus.SUCCESS.getValue());
+    }
+
+    public void validateCOD(String address, String deliveryFee){
+        if (address == null || deliveryFee == null){
+            this.setStatus(PaymentStatus.REJECTED.getValue());
+            return;
+        }
+        if (address.isEmpty() || deliveryFee.isEmpty()){
+            this.setStatus(PaymentStatus.REJECTED.getValue());
+            return;
+        }
+        this.setStatus(PaymentStatus.SUCCESS.getValue());
     }
 }
