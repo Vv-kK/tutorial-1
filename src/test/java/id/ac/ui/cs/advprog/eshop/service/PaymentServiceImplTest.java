@@ -65,7 +65,7 @@ public class PaymentServiceImplTest {
         UUID uuid = UUID.randomUUID();
         String paymentId = uuid.toString();
         Payment payment = new Payment(paymentId, PaymentMethod.VOUCHER_CODE.getValue(), payments.getFirst().getPaymentData(), payments.getFirst().getOrder());
-        doReturn(payment).when(paymentRepository).save(payment);
+        doReturn(payment).when(paymentRepository).save(any(Payment.class));
 
         Payment result = paymentService.addPayment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder());
         verify(paymentRepository, times(1)).save(any(Payment.class));
@@ -116,8 +116,6 @@ public class PaymentServiceImplTest {
     void testSetStatusToInvalidStatus(){
         Payment payment = payments.getLast();
         Payment newPayment = new Payment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder());
-        doReturn(payment).when(paymentRepository).findById(payment.getId());
-        doReturn(newPayment).when(paymentRepository).save(any(Payment.class));
 
         assertThrows(IllegalArgumentException.class,
                 () -> paymentService.setStatus(payment, "MEOW"));
