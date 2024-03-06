@@ -41,13 +41,10 @@ public class PaymentServiceImplTest {
         product1.setProductQuantity(2);
         products.add(product1);
 
-        orders = new ArrayList<>();
         Order order1 = new Order("13652556-012a-4c07-b546-54eb1396d79b",
                 products, 1708560000L, "Safira Sudrajat");
-        orders.add(order1);
         Order order2 = new Order("7f9e15bb-4b15-42f4-aebc-c3af385fb078",
                 products, 1708570000L, "Safira Sudrajat");
-        orders.add(order2);
 
         payments = new ArrayList<>();
         Map<String, String> paymentData1 = new HashMap<String, String>();
@@ -78,7 +75,7 @@ public class PaymentServiceImplTest {
         Payment payment = payments.get(0);
         doReturn(payment).when(paymentRepository).findById(payment.getId());
 
-        assertNull(paymentService.addPayment(payment));
+        assertNull(paymentService.addPayment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder()));
         verify(paymentRepository, times(0)).save(payment);
     }
 
@@ -89,7 +86,7 @@ public class PaymentServiceImplTest {
         doReturn(payment).when(paymentRepository).findById(payment.getId());
         doReturn(newPayment).when(paymentRepository).save(any(Payment.class));
 
-        Payment result = paymentService.setStatus(payment.getId(), PaymentStatus.SUCCESS.getValue());
+        Payment result = paymentService.setStatus(payment, PaymentStatus.SUCCESS.getValue());
 
         assertEquals(payment.getId(), result.getId());
         assertEquals(OrderStatus.SUCCESS.getValue(), result.getOrder().getStatus());
@@ -104,7 +101,7 @@ public class PaymentServiceImplTest {
         doReturn(payment).when(paymentRepository).findById(payment.getId());
         doReturn(newPayment).when(paymentRepository).save(any(Payment.class));
 
-        Payment result = paymentService.setStatus(payment.getId(), PaymentStatus.REJECTED.getValue());
+        Payment result = paymentService.setStatus(payment, PaymentStatus.REJECTED.getValue());
 
         assertEquals(payment.getId(), result.getId());
         assertEquals(OrderStatus.FAILED.getValue(), result.getOrder().getStatus());
@@ -120,7 +117,7 @@ public class PaymentServiceImplTest {
         doReturn(newPayment).when(paymentRepository).save(any(Payment.class));
 
         assertThrows(IllegalArgumentException.class,
-                () -> paymentService.setStatus(payment.getId(), "MEOW"));
+                () -> paymentService.setStatus(payment, "MEOW"));
 
         verify(orderService, times(0)).updateStatus(anyString(), anyString());
     }
