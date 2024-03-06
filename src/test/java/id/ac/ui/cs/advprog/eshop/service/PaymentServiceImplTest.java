@@ -24,7 +24,7 @@ public class PaymentServiceImplTest {
     @InjectMocks
     PaymentServiceImpl paymentService;
 
-    @InjectMocks
+    @Mock
     OrderServiceImpl orderService;
 
     @Mock
@@ -62,7 +62,9 @@ public class PaymentServiceImplTest {
 
     @Test
     void testAddPayment(){
-        Payment payment = payments.get(0);
+        UUID uuid = UUID.randomUUID();
+        String paymentId = uuid.toString();
+        Payment payment = new Payment(paymentId, PaymentMethod.VOUCHER_CODE.getValue(), payments.getFirst().getPaymentData(), payments.getFirst().getOrder());
         doReturn(payment).when(paymentRepository).save(payment);
 
         Payment result = paymentService.addPayment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder());
@@ -72,7 +74,8 @@ public class PaymentServiceImplTest {
 
     @Test
     void testAddPaymentIfAlreadyExist(){
-        Payment payment = payments.get(0);
+        Payment payment = new Payment(payments.getFirst().getId(), PaymentMethod.VOUCHER_CODE.getValue(), payments.getFirst().getPaymentData(), payments.getFirst().getOrder());
+
         doReturn(payment).when(paymentRepository).findById(payment.getId());
 
         assertNull(paymentService.addPayment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder()));
@@ -123,11 +126,9 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testUpdateStatusInvalidOrderId() {
-        doReturn(null).when(paymentRepository).findById("zczc");
-
+    void testUpdateStatusInvalidPayment() {
         assertThrows(NoSuchElementException.class,
-                () -> orderService.updateStatus("zczc", OrderStatus.SUCCESS.getValue()));
+                () -> paymentService.setStatus(null, OrderStatus.SUCCESS.getValue()));
 
         verify(orderService, times(0)).updateStatus(anyString(), anyString());
     }
