@@ -15,9 +15,6 @@ public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private PaymentRepository paymentRepository;
 
-    @Autowired
-    private OrderService orderService;
-
     @Override
     public Payment addPayment(String id, String method, Map<String, String> paymentData, Order order) {
         if (paymentRepository.findById(id) == null){

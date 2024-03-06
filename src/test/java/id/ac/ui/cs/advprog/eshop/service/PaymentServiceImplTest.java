@@ -25,9 +25,6 @@ public class PaymentServiceImplTest {
     PaymentServiceImpl paymentService;
 
     @Mock
-    OrderServiceImpl orderService;
-
-    @Mock
     PaymentRepository paymentRepository;
 
     List<Payment> payments;
@@ -105,7 +102,6 @@ public class PaymentServiceImplTest {
     @Test
     void testSetStatusToInvalidStatus(){
         Payment payment = payments.getLast();
-        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), payment.getPaymentData(), payment.getOrder());
 
         assertThrows(IllegalArgumentException.class,
                 () -> paymentService.setStatus(payment, "MEOW"));
