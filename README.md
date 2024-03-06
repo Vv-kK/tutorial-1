@@ -53,3 +53,19 @@ Sedangkan, CD atau Continuous Deployment berarti adanya deploy secara otomatis s
    - Membuat kode lebih mudah mengalami error ketika melakukan extension atau penambahan fitur baru (jika satu class atau method memiliki fungsionalitas yang campur-campur akan lebih sulit memahami kode bagian mana yang menyebabkan error)
    - Kode menjadi sulit dipahami dan orang menjadi habis banyak waktu memahami kodenya (contohnya jika semua digabung menjadi satu class maka akan sulit untuk memahami apa yang dilakukan oleh class tersebut)
    - Proses testing menjadi lebih sulit dan pelacakan alasan kemunculan bug juga menjadi lebih sulit (contohnya akan lebih sulit membuat unit testing jika satu method melakukan banyak fungsionalitas dan sulit untuk mendeteksi dimana kesalahan kode kita karena readabilitynya juga lebih jelek tanpa menerapkan SOLID principles)
+
+## Modul 4
+1. Setelah mencoba menggunakan metode TDD saya merasa metode ini berhasil membantu saya membuat kode yang akurat, clean, 
+dan maintainable. Hal ini karena saya menjadi berpikir dengan detail semua kemungkinan yang dapat terjadi pada kode saya sebelum membuatnya. Cara berpikir saya menjadi lebih rapi dan saya semakin yakin bahwa saya telah mengcover edge case yang ada. 
+Selain itu, saya juga berhasil membuat test dengan code coverage >90% pada Payment dan hal ini membuat saya lebih percaya diri untuk melakukan refactor pada kode saya dan yakin bahwa kodenya tetap berjalan dengan baik selama lolos dari test.
+Namun, saya masih belum terbiasa menggunakan metode ini yang menyebabkan kecepatan bekerja saya menjadi lebih lambat karena butuh waktu untuk membiasakan diri. 
+
+
+2. F.I.R.S.T. principle yang telah diterapkan:
+   - **Fast**: Test pada tutorial dapat berjalan dengan cepat karena memanfaatkan stubbing. 
+   Saya juga telah berhasil membuat test yang dapat berjalan cepat dengan memanfaatkan stubbing pada Payment.
+   - **Isolated/Independent**: Test yang dibuat pada tutorial tidak mempengaruhi satu sama lain dengan adanya set up yang dilakukan setiap sebelum test dijalankan.
+   Test yang saya buat untuk payment juga mengacu pada tutorial sehingg telah berhasil menerapkan prinsip ini.
+   - **Repeatable**: Karena test sudah memenuhi prinsip isolated dan bisa memberikan hasil yang konsisten, maka prinsip ini telah terpenuhi.
+   - **Self-Validating**: Prinsip ini telah terpenuhi dengan penggunaan assertions dan tidak menggunakan print untuk mendeteksi error.
+   - **Thorough/Timely**: Test pada tutorial dan test yang saya buat telah memenuhi prinsip ini karena telah mengcover happy dan unhappy test. Selain itu, code coverage nya juga sudah tinggi sehingga telah mencover berbagai kemungkinan.
